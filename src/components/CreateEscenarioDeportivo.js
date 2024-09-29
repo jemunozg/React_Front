@@ -15,16 +15,24 @@ const CreateEscenarioDeportivo = () => {
     const fetchFuncionarios = async () => {
         try {
             const response = await axios.get(`${endpoint}/funcionarios`);
-            console.log("Funcionarios obtenidos:", response.data); // Log de respuesta
-            setFuncionarios(response.data);
+            console.log("Funcionarios obtenidos:", response.data); // Verifica la estructura
+            const data = response.data;
+
+            // Verificar si la respuesta es un array, si no lo es, asignar un array vacío
+            if (Array.isArray(data)) {
+                setFuncionarios(data);
+            } else {
+                console.error("La respuesta de funcionarios no es un array");
+                setFuncionarios([]);
+            }
         } catch (error) {
             console.error("Error al obtener funcionarios:", error);
+            setFuncionarios([]); // Manejo de error: asegurar que funcionarios sea un array
         }
     };
 
     // Llamar a fetchFuncionarios al cargar el componente
     useEffect(() => {
-        console.log("Componente montado"); // Log de montaje
         fetchFuncionarios();
     }, []);
 
@@ -45,7 +53,7 @@ const CreateEscenarioDeportivo = () => {
 
     return (
         <div>
-            <h3>Create New Escenario Deportivo</h3>
+            <h3>Crear Nuevo Escenario Deportivo</h3>
             <form onSubmit={store}>
                 <div className='mb-3'>
                     <label className='form-label'>Nombre</label>
@@ -76,7 +84,8 @@ const CreateEscenarioDeportivo = () => {
                         required
                     >
                         <option value=''>Selecciona un funcionario</option>
-                        {funcionarios.map((funcionario) => (
+                        {/* Asegúrate de que funcionarios sea un array antes de mapear */}
+                        {Array.isArray(funcionarios) && funcionarios.map((funcionario) => (
                             <option key={funcionario.id_fun} value={funcionario.id_fun}>
                                 {funcionario.nombre_fun}
                             </option>
@@ -84,7 +93,7 @@ const CreateEscenarioDeportivo = () => {
                     </select>
                 </div>
                 <button type='submit' className='btn btn-success'>
-                    Create
+                    Crear
                 </button>
             </form>
         </div>

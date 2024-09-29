@@ -16,6 +16,7 @@ const EditEscenarioDeportivo = () => {
   const fetchFuncionarios = async () => {
     try {
       const response = await axios.get(`${endpoint}/funcionarios`);
+      console.log("Funcionarios:", response.data); // Verifica la respuesta
       setFuncionarios(response.data);
     } catch (error) {
       console.error("Error al obtener funcionarios:", error);
@@ -91,7 +92,7 @@ const EditEscenarioDeportivo = () => {
             required
           >
             <option value=''>Selecciona un funcionario</option>
-            {funcionarios.map((funcionario) => (
+            {Array.isArray(funcionarios) && funcionarios.map((funcionario) => (
               <option key={funcionario.id_fun} value={funcionario.id_fun}>
                 {funcionario.nombre_fun}
               </option>
