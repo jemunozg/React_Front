@@ -1,4 +1,6 @@
-import './App.css';
+//import './App.css';
+
+import './customcss/style.css';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
 
 import ShowRole from './components/ShowRole';
